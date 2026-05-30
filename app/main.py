@@ -1,10 +1,33 @@
+import asyncio
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Query
 
 from app.models import NotableEvent, WeatherReading
+from app.poller import poller_loop
 from app.storage import Storage
 
-app = FastAPI()
+logging.basicConfig(level=logging.INFO)
+
 storage = Storage()
+_poller_task: asyncio.Task | None = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global _poller_task
+    _poller_task = asyncio.create_task(poller_loop(storage))
+    yield
+    if _poller_task is not None:
+        _poller_task.cancel()
+        try:
+            await _poller_task
+        except asyncio.CancelledError:
+            pass
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/health")

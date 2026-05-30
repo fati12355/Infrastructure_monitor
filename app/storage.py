@@ -135,6 +135,26 @@ class Storage:
             return None
         return self._row_to_reading(row)
 
+    def get_reading_before(
+        self, city: str, timestamp: datetime
+    ) -> WeatherReading | None:
+        with self._connect() as conn:
+            row = conn.execute(
+                """
+                SELECT city, timestamp, weather_code, temperature_2m,
+                       apparent_temperature, precipitation, wind_speed_10m
+                FROM weather_readings
+                WHERE city = ? AND timestamp < ?
+                ORDER BY timestamp DESC
+                LIMIT 1
+                """,
+                (city, self._to_iso(timestamp)),
+            ).fetchone()
+
+        if row is None:
+            return None
+        return self._row_to_reading(row)
+
     def save_event(self, event: NotableEvent) -> None:
         with self._connect() as conn:
             conn.execute(
