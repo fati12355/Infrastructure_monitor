@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+
+Event detection rules:
+
+- Each weather rule must be implemented as an independent function.
+- Event detection functions may not write to the database.
+- Event detection functions may not perform API requests.
+- If no previous reading exists for a city, establish a baseline and emit no event.
+- Do not emit duplicate events for identical weather conditions.
+- Every event must contain:
+    city
+    timestamp
+    rule_name
+    alert_level
+    explanation
