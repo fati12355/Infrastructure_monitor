@@ -46,10 +46,8 @@ def vancouver_late_spring_squall(
         rule_name="vancouver_late_spring_squall",
         alert_level="Yellow Advisory",
         message=(
-            "June storms on the west coast bring heavy rain showers. Because Vancouver "
-            "has dense marine traffic and residents out on the water, a sudden convective "
-            "burst matching this profile triggers immediate marine and coastal localized "
-            "transit safety hazards."
+            "Heavy rain showers and strong winds are hitting Vancouver. "
+            "Stay off the water and use caution on coastal routes."
         ),
         reading=current,
         triggered_values={
@@ -80,9 +78,8 @@ def toronto_early_heatwave_shock(
         rule_name="toronto_early_heatwave_shock",
         alert_level="Orange Warning",
         message=(
-            "In late May and early June, the human body has not yet acclimatized to "
-            "summer temperatures. A humidex crossing 35°C this early in the year spikes "
-            "medical emergencies much faster than the exact same temperature would in August."
+            "Humidex is 35°C or higher in Toronto. Limit outdoor activity, "
+            "stay hydrated, and check on vulnerable neighbours."
         ),
         reading=current,
         triggered_values={
@@ -113,9 +110,8 @@ def ottawa_flash_urban_flood(
         rule_name="ottawa_flash_urban_flood",
         alert_level="Orange Warning",
         message=(
-            "Ottawa's suburban and downtown drainage infrastructure can become easily "
-            "overwhelmed by convective spring downpours. Shifting more than 25 mm of "
-            "water in a single hour creates flash street pooling and basement flooding risks."
+            "Heavy rain is falling in Ottawa with high accumulation. "
+            "Avoid flooded roads and watch for basement flooding."
         ),
         reading=current,
         triggered_values={
@@ -146,9 +142,8 @@ def severe_microburst_thunderstorm_wind(
         rule_name="severe_microburst_thunderstorm_wind",
         alert_level="Orange Warning",
         message=(
-            "Late spring convective setups create high-velocity downdrafts. In heavily "
-            "treed residential corridors like those in Ottawa and Toronto, these wind "
-            "speeds tear down active power grids and tree limbs."
+            f"Thunderstorm winds are dangerously strong in {current.city}. "
+            "Stay indoors, away from windows, and watch for downed trees or power lines."
         ),
         reading=current,
         triggered_values={
@@ -179,10 +174,8 @@ def toronto_commuter_flash_freeze(
         rule_name="toronto_commuter_flash_freeze",
         alert_level="Orange Warning",
         message=(
-            "Severe spring thunderstorms dropping heavy hail onto high-velocity highways "
-            "like the 401 instantly reduce traction to near-zero. Because drivers are "
-            "traveling at high speeds in summer mindsets, this specific WMO code trigger "
-            "requires immediate highway alerts."
+            "Hail and heavy rain are hitting Toronto highways. "
+            "Slow down, increase following distance, and delay non-essential travel."
         ),
         reading=current,
         triggered_values={
@@ -213,10 +206,8 @@ def vancouver_coastal_fog_blindspot(
         rule_name="vancouver_coastal_fog_blindspot",
         alert_level="Yellow Advisory",
         message=(
-            "Late spring warm air moving over the still-frigid Pacific waters creates "
-            "dense marine advection fog. Stagnant winds keep it locked over the harbor "
-            "and airport, completely shutting down visual flight rules (VFR) for "
-            "floatplanes and transit."
+            "Dense fog with little wind in Vancouver. "
+            "Allow extra travel time and use extra caution on roads and on the water."
         ),
         reading=current,
         triggered_values={
@@ -247,10 +238,8 @@ def ottawa_stagnant_smog_trap(
         rule_name="ottawa_stagnant_smog_trap",
         alert_level="Yellow Advisory",
         message=(
-            "When early summer heat builds up in the Ottawa Valley trench without wind "
-            "to disperse it, poor air quality and high ground-level ozone concentrations "
-            "get trapped. This triggers breathing sensitivities for vulnerable populations "
-            "early in the season."
+            "Heat built up in Ottawa without wind to disperse it. "
+            "Exercise caution if you have breathing sensitivity."
         ),
         reading=current,
         triggered_values={
@@ -287,10 +276,8 @@ def instability_transfer_toronto_to_ottawa(
         rule_name="instability_transfer_toronto_to_ottawa",
         alert_level="Internal Predictive Watch",
         message=(
-            "Severe convective squall lines routinely form over Southwestern Ontario or "
-            "Michigan, sweep through Toronto, and race down the spine of Highway 411 and "
-            "the St. Lawrence Valley toward Ottawa. Ottawa is already warm and unstable; "
-            "severe thunderstorm risk is expected to arrive in 4 to 5 hours."
+            "Thunderstorms are active in Toronto with warm conditions in Ottawa. "
+            "Prepare for severe weather in Ottawa within the next 4 to 5 hours."
         ),
         reading=ottawa,
         triggered_values={
@@ -319,10 +306,8 @@ def continental_heat_pump(
         rule_name="continental_heat_pump",
         alert_level="System Informational Flag",
         message=(
-            "Atmospheric blocking ridges often build on the west coast first, causing high "
-            "spring temperatures in BC. As the jet stream shifts east, this high-pressure "
-            "ridge travels across the Prairies and parks over Eastern Canada roughly 4 to 5 "
-            "days later, triggering the first major eastern heatwaves of the year."
+            f"Vancouver is unusually warm. {target.city} may see a major heat spike "
+            "in 4 to 5 days—plan ahead for cooling and hydration."
         ),
         reading=target,
         triggered_values={
@@ -360,11 +345,8 @@ def frontal_boundary_flash_flood_trap(
         rule_name="frontal_boundary_flash_flood_trap",
         alert_level="Red Warning",
         message=(
-            "In late spring, slow-moving warm fronts often stall between Toronto and Ottawa. "
-            "Both stations are simultaneously registering continuous rain alongside high "
-            "precipitation values, indicating a trained atmospheric conveyor belt of "
-            "moisture that is not moving. This is the classic setup for major regional "
-            "flooding in Eastern Ontario."
+            "Heavy rain is stalled between Toronto and Ottawa. "
+            "Ottawa faces elevated flash-flood risk—avoid low-lying areas and basements."
         ),
         reading=ottawa,
         triggered_values={
