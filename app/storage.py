@@ -1,23 +1,47 @@
 import json
+import os
 import sqlite3
 from datetime import datetime
 from pathlib import Path
 
 from app.models import NotableEvent, WeatherReading
 
+DEFAULT_DB_PATH = "data/weather.db"
+
+
+def get_db_path() -> Path:
+    return Path(os.environ.get("DB_PATH", DEFAULT_DB_PATH))
+
 
 class Storage:
-    def __init__(self, db_path: str | Path = "weather.db") -> None:
-        self.db_path = Path(db_path)
+    def __init__(self, db_path: str | Path | None = None) -> None:
+        self.db_path = Path(db_path) if db_path is not None else get_db_path()
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self.init_db()
 
     def _connect(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(
+            self.db_path,
+            timeout=30.0,
+            check_same_thread=False,
+        )
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def _connect_readonly(self) -> sqlite3.Connection:
+        db_uri = self.db_path.resolve().as_posix()
+        conn = sqlite3.connect(
+            f"file:{db_uri}?mode=ro",
+            uri=True,
+            timeout=30.0,
+            check_same_thread=False,
+        )
         conn.row_factory = sqlite3.Row
         return conn
 
     def init_db(self) -> None:
         with self._connect() as conn:
+            conn.execute("PRAGMA journal_mode=WAL")
             conn.executescript(
                 """
                 CREATE TABLE IF NOT EXISTS weather_readings (
@@ -196,7 +220,7 @@ class Storage:
         query += " ORDER BY timestamp DESC LIMIT ?"
         params.append(limit)
 
-        with self._connect() as conn:
+        with self._connect_readonly() as conn:
             rows = conn.execute(query, params).fetchall()
 
         return [self._row_to_reading(row) for row in rows]
@@ -217,7 +241,7 @@ class Storage:
         query += " ORDER BY timestamp DESC LIMIT ?"
         params.append(limit)
 
-        with self._connect() as conn:
+        with self._connect_readonly() as conn:
             rows = conn.execute(query, params).fetchall()
 
         return [self._row_to_event(row) for row in rows]

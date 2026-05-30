@@ -2,7 +2,7 @@ import asyncio
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Response
 
 from app.models import NotableEvent, WeatherReading
 from app.poller import poller_loop
@@ -37,17 +37,21 @@ def health():
 
 @app.get("/readings", response_model=list[WeatherReading])
 def get_readings(
+    response: Response,
     city: str | None = None,
     limit: int = Query(default=50, ge=1),
 ):
+    response.headers["Cache-Control"] = "no-store"
     return storage.list_readings(city=city, limit=limit)
 
 
 @app.get("/events", response_model=list[NotableEvent])
 def get_events(
+    response: Response,
     city: str | None = None,
     limit: int = Query(default=50, ge=1),
 ):
+    response.headers["Cache-Control"] = "no-store"
     return storage.list_events(city=city, limit=limit)
 
 
